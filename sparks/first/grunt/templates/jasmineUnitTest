@@ -1,0 +1,13 @@
+'use strict';
+
+describe( '<%= grunt.option("name") %>', function () {
+    beforeEach( function () {
+        <%= grunt.option("controllersModule") %>
+        <%= grunt.option("servicesModule") %>
+    });
+
+    it( '', function () {
+
+    });
+
+});

@@ -1,0 +1,7 @@
+'use strict';
+
+angular.module( '<%= grunt.config("sparkConfig").ngapp %>.directives' )
+
+.directive( '<%= grunt.option("name") %>', function( <%= grunt.option("dependencyInjections").list %> ) {
+
+})

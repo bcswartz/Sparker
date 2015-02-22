@@ -1,0 +1,12 @@
+{
+  "name": "angularTemplate",
+  "version": "0.0.2",
+  "dependencies": {
+    "bootstrap": "~3.3.0",
+    "angular": "~1.3.3",
+    "angular-route": "~1.3.0",
+    "angular-mocks": "~1.3.3",
+    "angular-aria": "~1.3.3"
+  },
+  "private": true
+}

@@ -1,0 +1,7 @@
+'use strict';
+
+angular.module( '<%= grunt.config("sparkConfig").ngapp %>.controllers' )
+
+.controller( '<%= grunt.option("name") %>', [ <%= grunt.option("dependencyInjections").quotedList %> function( <%= grunt.option("dependencyInjections").list %> ) {
+
+}]);

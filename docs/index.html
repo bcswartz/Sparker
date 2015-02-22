@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Sparker Documentation</title>
+    <link rel="stylesheet" media="screen" href="bootstrap.min.css"/>
+    <link rel="stylesheet" media="screen" href="sparkerDocs.css" />
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <h3>Contents</h3>
+            <ul class="nav nav-sidebar">
+                <li><a href="#what">What is Sparker?</a></li>
+                <li><a href="#userstory">The Sparker User Story</a></li>
+                <li><a href="#requirements">Requirements / Getting Started</a></li>
+                <li><a href="#folders">The Roles of the Sparker Folders</a></li>
+                <li><a href="#grunttasks">The Sparker Grunt Tasks</a></li>
+                <li><a href="#yourspark">Adding Your Own Spark</a></li>
+                <li><a href="#resources">Resources / Inspirations</a></li>
+            </ul>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <h1>Sparker Documentation</h1>
+            <h2><a name="what"></a>What is Sparker?</h2>
+
+            <p>Sparker is a management system for maintaining a library of web application templates (referred to as "sparks").  Powered by <a href="gruntjs.com">Grunt</a> and structured around certain
+                conventions, Sparker makes it easy to:</p>
+
+            <ul>
+                <li>Start a new web application based on any of the available sparks.</li>
+                <li>Temporarily swap out your application with a different spark to compare and contrast approaches.</li>
+                <li>Take timestamped snapshots of your current web application codebase.</li>
+                <li>Generate builds of your application for different environments.</li>
+                <li>Open any build in your preferred web browser from the command line.</li>
+                <li>Run additional Grunt tasks provided by the current spark.</li>
+            </ul>
+
+            <h2><a name="userstory"></a>The Sparker User Story</h2>
+
+            <ol id="storyList">
+                <li>User Bob downloads Sparker.</li>
+                <li>He reads this document.</li>
+                <li>Bob looks through the "sparks" folder to find the best one to build his web application project on.</li>
+                <li>He reads the documentation for the "AngularSmooth" spark in the AngularSmooth/docs folder and finds it promising.  He notes that:
+                    <ul>
+                        <li>AngularSmooth has two sub-folders in its "code" folder, "demo" and "template", each with an "app" and "testing" directory.</li>
+                        <li>AngularSmooth has a "grunt" folder, indicating there are spark-specific Grunt tasks available.</li>
+                    </ul>
+                </li>
+                <li>Bob opens a terminal window, and navigates to the Sparker "tools" folder.  At the command prompt, he uses the "_loadspark" Grunt task to load the "demo" codebase
+                    of the AngularSmooth spark into the Sparker "app" folder.</li>
+                <li>He opens up the demo app in his web browser and runs through the demo.  He likes what he sees.</li>
+                <li>Terminal window still open, he runs "grunt --help" to see what Grunt tasks are provided by the AngularSmooth spark.  He sees that the AngularSmooth developer wrote
+                    tasks for running the unit and Protractor tests for the spark via Grunt, so he runs those tasks to make sure they all pass.</li>
+                <li>Satisfied with what he sees, Bob uses "_loadspark" to load the "template" codebase to serve as a clean slate for his app.</li>
+                <li>Bob starts developing his app.</li>
+                <li>At a certain point, Bob gets stuck trying to implement functionality he saw in the demo.  He uses the "_swap" task to put his work aside and re-load the "demo"
+                    codebase so he can see how exactly the demo did it.  Once done, he uses "_swap" again to return to his codebase.</li>
+                <li>Bob reaches a point where he wants to put his application on a server he shares with his project team.  He creates a folder called "projectServer" under the
+                    "builds" directory and uses the "_build" task to deploy the needed code from the "app" folder to the "projectServer" directory, concatenating the needed CSS and
+                    JavaScript files in the process.  He uses the "_openbuild" task to quickly to open the "projectServer" app build in his browser of choice to make sure everything still
+                    works</li>
+                <li>Several weeks later, the project is done.  Even though the deployed version of the code is stored in version control, Bob decides he wants to retain a copy of the
+                    development and testing codebase, so he uses the "_snapshot" task to do just that.</li>
+                <li>Bob gets a new project, one with very different requirements.  He doesn't need to download Sparker again; he simply looks for the appropriate spark to use
+                    "_loadspark" with and start the process again.</li>
+            </ol>
+
+            <h2><a name="requirements"></a>Requirements / Getting Started</h2>
+
+            <p><strong>Questions: Grunt CLI need installing?  "npm install" needed if node_modules exist?</strong></p>
+            <p>In order to use Sparker, you will need to have the following software installed on your machine:</p>
+            <ul>
+                <li><a href="http://nodejs.org/" target="_blank">Node.js</a> - which should also install <a href="https://github.com/npm/npm" target="_blank">npm</a></li>
+                <li><a href="gruntjs.com" target="_blank">Grunt</a>.
+                    <ul>
+                        <li>Once Node and npm are installed, you can install Grunt from the command prompt with the command <em>npm install -g grunt-cli</em></li>
+                    </ul>
+                </li>
+                <li>A web server (IIS, Apache, etc.)</li>
+                <li><a href="http://www.google.com/chrome/">Google Chrome</a></li>
+            </ul>
+
+            <p>Unzip/place Sparker in a web-accessible directory (it does not have to be in the root web directory).  To verify you're all set, open a terminal/command window and navigate to the
+                "tools" directory of Sparker.  Type <em>grunt _openbuild</em> at the command prompt, which should open the default spark loaded in the "app" directory in a Chrome tab.</p>
+
+            <h2><a name="folders"></a>The Roles of the Sparker Folders</h2>
+
+            <p>Sparker is built with certain expectations regarding the folder structure and how the directories are used.</p>
+
+            <ul id="mainDirectoryList">
+                <li>
+                    <strong>app:</strong>
+                    <p>This is where you develop your web application, using a particular spark as a starting point.  Everything needed to run your web application (HTML, CSS, JavaScript)
+                        goes in this folder, and you can organize your files and folders within it as you see fit.</p>
+                </li>
+                <li>
+                    <strong>builds:</strong>
+                    <p>Contains sub-folders representing different deployment environments.  You can use the Sparker "_build" Grunt task to build and deploy your application to any of these
+                        subfolders or use your own build task.  The existing sub-folders are merely suggestions and can be renamed or deleted (though the build tasks will default
+                        to working with a "test" build folder if no build is specified).</p>
+                </li>
+                <li>
+                    <strong>docs:</strong>
+                    <p>The folder containing the documentation for Sparker itself.</p>
+                </li>
+                <li>
+                    <strong>sparks:</strong>
+                    <p>This folder contains all of the sparks (web application templates) added to Sparker.</p>
+                </li>
+                <li>
+                    <strong>testing:</strong>
+                    <p>This folder contains all of the files (test suites, resources, and Node modules) needed to test the code in the app folder.  When you load a spark codebase or swap sparks, if
+                        the codebase comes with a "testing" folder, the files from that folder will replace the current contents of this folder.</p>
+                </li>
+                <li>
+                    <strong>tools:</strong>
+                    <p>The folder containing all of the files that power the Sparker Grunt tasks as well as any tasks provided by the currently loaded spark.  It also holds the folders containing
+                        application snapshots and any currently swapped-out codebase.</p>
+                </li>
+            </ul>
+
+            <h2><a name="grunttasks"></a>The Sparker Grunt Tasks</h2>
+
+            <p>Sparker comes with a number of built-in Grunt tasks, which can be executed from the "tools" directory.  This built-in tasks all start with an underscore:  any other task listed when
+                you run "grunt --help" are either the default plugin tasks or tasks provided by the currently loaded spark codebase.  The built-in tasks are divided into several categories.</p>
+
+            <h3>Browser Tasks</h3>
+
+            <p>These tasks allow you to open certain web content directly from the command line.  Before you use these tasks, however, you need to change two configuration settings for Sparker,
+                both contained in the tools/grunt/Sparker/sparkerConfig.js file:</p>
+            <ul class="sparkerConfigList">
+                <li>projectUrl:  Update this setting to point to the base URL for Sparker.  Example: if you can open the web application in the Sparker "app" directory with the URL
+                    "http://localhost/Sparker/app", then your projectUrl is "http://localhost/Sparker"</li>
+                <li>projectWebBrowser:  The name of the browser used by the browser tasks.  "Chrome" is the default.</li>
+            </ul>
+
+            <p>With that said, here are the Sparker Grunt browser tasks:</p>
+
+            <ul class="sparkerTaskList">
+                <li>
+                    <span>_opendocs</span>
+                    <div>Example: <em>grunt _opendocs</em></div>
+                    <p>Opens the index.html file in Sparker/docs (this file).</p>
+                </li>
+                <li>
+                    <span>_opensparkdocs</span>
+                    <div>Example: <em>grunt _opensparkdocs --spark=first</em></div>
+                    <p>Opens the index.html file in the "docs" directory of the specified spark. Options:</p>
+                    <ul class="taskOptions">
+                        <li>spark:  The name of the spark (required).</li>
+                    </ul>
+                </li>
+                <li>
+                    <span>_openbuild</span>
+                    <div>Example: <em>grunt _openbuild --build=qa</em></div>
+                    <p>Opens the index.html file in the specified build directory. Options:</p>
+                    <ul class="taskOptions">
+                        <li>build: The name of the build folder.  Defaults to the "app" folder if not specified.</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h3>Spark Tasks</h3>
+
+            <p>These tasks help you manage the spark codebases.</p>
+
+            <ul class="sparkerTaskList">
+                <li>
+                    <span>_loadspark</span>
+                    <div>Example: <em>grunt _loadspark --spark=first --code=template --force</em></div>
+                    <p>Replaces the current contents of the "app" and "testing" Sparker directories with the respective directories in the selected spark and codebase. Options:</p>
+                    <ul class="taskOptions">
+                        <li>spark: The name of the spark (required).</li>
+                        <li>code: The name of the code directory in the spark you want to load (some sparks may have a template codebase and a demo codebase) (required).</li>
+                        <li>force: Set to true or just use "--force". Mandated as a precaution against accidental usage (required).</li>
+                    </ul>
+                </li>
+                <li>
+                    <span>_currentspark</span>
+                    <div>Example: <em>grunt _currentspark</em></div>
+                    <p>Returns the name of the spark codebase current in use / currently occupying the "app" folder.</p>
+                </li>
+                <li>
+                    <span>_swap</span>
+                    <div>Example (1st use): <em>grunt _swap --spark=differentSpark --code=demo</em></div>
+                    <div>Example (2nd use): <em>grunt _swap</em></div>
+                    <p>The first time you run the task, it copies the current contens of the "app" and "testing" Sparker directories to a "swap" folder in the "tools" directory, then it performs
+                        the same actions as the _loadspark task.  The second time you run the task (without options), it will move the contents of the "swap" folder back into the "app" and "testing"
+                        directories.  Options:</p>
+                    <ul class="taskOptions">
+                        <li>spark: The name of the spark.  Required first time task is invoked; rejected while code lives in the swap directory.</li>
+                        <li>code:  The name of the code directory in the spark to use.  Required first time task is invoked; rejected while code lives in the swap directory.</li>
+                    </ul>
+                </li>
+                <li>
+                    <span>_swapstatus</span>
+                    <div>Example: <em>grunt _swapstatus</em></div>
+                    <p>Reports if you currently have one spark codebase swapped for another.</p>
+                </li>
+                <li>
+                    <span>_snapshot</span>
+                    <div>Example: <em>grunt _snapshot --name=preRabbitHole</em></div>
+                    <p>Generate a snapshot folder containing a copy of the current files in the "app" and "testing" directories.  In addition to creating a timestamped snapshot folder in either
+                        the "dated" or "named" subfolder of the "snapshots" folder, it will also add the snapshot to the "latest" folder.  Options:</p>
+                    <ul class="taskOptions">
+                        <li>name: adds name to timestamped snapshot and puts snapshot folder under the "named" folder rather than the "dated" folder.</li>
+                    </ul>
+                </li>
+                <li>
+                    <span>_clearsnapshots</span>
+                    <div>Example: <em>grunt _clearsnapshots</em></div>
+                    <p>Removes all snapshot folders except for any snapshot folders stored in the "snapshots/protected" folder.  Options:</p>
+                    <ul class="taskOptions">
+                        <li>force: Set to true or just use "--force". Mandated as a precaution against accidental usage (required).</li>
+                    </ul>
+                </li>
+            </ul>
+
+
+            <h3>Build Tasks</h3>
+
+            <p>These tasks involve building a deployable version of your web application code from the files in the "app" folder.</p>
+
+            <ul class="sparkerTaskList">
+                <li>
+                    <span>_build</span>
+                    <div>Example: <em>grunt _build --build=production</em></div>
+                    <p>Creates a build of the web application in the "app" directory to the specified build subfolder in "builds". It creates the build in the following manner:</p>
+                    <ul>
+                        <li>It copies all of the files and folders specified in the "buildFiles" setting of the tools/grunt/spark/sparkConfig.js file.</li>
+                        <li>It parses any &lt;link&gt; tags between the two "spark-css" HTML comments in the index.html file, uses that data to create a single concatenated
+                            CSS file (the name of which is determined by the "masterCSSFilename" setting in the tools/grunt/Sparker/sparkerConfig.js), and creates a link to that new
+                            CSS file in index.html</li>
+                        <li>It parses any &lt;script&gt; tags between the two "spark-js" HTML comments in the index.html file, uses that data to create a single concatenated
+                            JS file (the name of which is determined by the "masterJSFilename" setting in the tools/grunt/Sparker/sparkerConfig.js), and creates a link to that new
+                            JavaScript file in index.html</li>
+                        <li>It will remove any HTML "spark-comment" comments ("&lt;--spark-comment: ... --&gt;") and any single-line JavaScript "spark-comment" comments
+                        ("//spark-comment ...") from all files.</li>
+                        <li>It will remove all the content between two "spark-delete" HTML comments as well as the comments themselves from all files.</li>
+                    </ul>
+                    <p>Task options:</p>
+                    <ul class="taskOptions">
+                        <li>build: The name of the build folder.  Defaults to "test" folder if not specified.</li>
+                        <li>clean:  True or false (default).  Determines if files/folders in the build folder will be deleted before build.</li>
+                        <li>minify:  True or false (default).  Determines if the JavaScript code will be minified via the
+                            <a href="https://github.com/gruntjs/grunt-contrib-uglify" target="_blank">grunt-contrib-uglify</a> plugin.</li>
+                    </ul>
+                </li>
+                <li>
+                    <span>_clearbuild</span>
+                    <div>Example: <em>grunt _clearbuild --build=qa</em></div>
+                    <p>Deletes all files and folders in the specified build folder.  Optional subtask of the _build task. Options:</p>
+                    <ul class="taskOptions">
+                        <li>build: The name of the build folder.  Defaults to "test" folder if not specified.</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h2><a name="yourspark"></a>Adding Your Own Spark</h2>
+
+            <p>Everything covered up until now concerns using Sparker to choose a spark, use the spark as the starting point for your own web application, and then creating builds
+                out of your application.  But if you already have your own starting template when it comes to building your web applications, you can transform that into your own spark.</p>
+
+            <p>At a minimum, a spark must contain:</p>
+            <ul id="sparkMinimums">
+                <li>Three subfolders named "code", "docs", and "grunt"</li>
+                <li>The "code" folder must contain at least one codebase subfolder which then contains the "app" folder with all of the files needed to run the web application.</li>
+                <li>The "docs" folder must contain some HTML documentation about the spark.</li>
+                <li>The "grunt" folder must contain a "sparkConfig.json" file containing a "buildFiles" setting for the Sparker _build task to use.
+                    <ul><li>(Alternatively, you could create your own Grunt build task and instruct would-be users of your spark to use that instead)</li></ul>
+                </li>
+            </ul>
+
+            <p>A more robust spark, however, would provide both a "demo" codebase as well as the template codebase designed to be the starting point of the app, and each
+                codebase would come with "testing" folders (containing unit and/or end-to-end tests for your code) as well as the "app" folders.  The "first" spark whose "demo"
+                codebase is the starting codebase in Sparker is a good reference example.</p>
+
+            <p>It is also recommend that you comment your code to help other developers understand it.  You can create single/multi-line HTML comments and single-line
+                JavaScript comments that will be excluded from the deployed version of the code created by the Sparker _build task.  Examples:</p>
+            <ul>
+                <li>&lt;--spark-comment: This will be erased --&gt;</li>
+                <li>&lt;-- spark-comment: So will this (the regex will tolerate spaces before "spark" --&gt;</li>
+                <li>//spark-comment: This will tolerate a space bfore "spark" too.</li>
+            </ul>
+
+            <p>You can also enclose HTML content that should not appear in the deployed code by enclosing the content between two &lt;--spark-delete--&gt; comments.</p>
+
+            <p>The suggested way to go about creating your spark is to empty out the Sparker "app" and "testing" folders and write your code in there, and later copy those
+                folders into the appropriate code folder in your spark.</p>
+
+            <p>If you are comfortable with creating Grunt tasks, you can create also tasks just for your spark that can also be executed from the Sparker "tools" directory when
+                your spark is loaded.  The suggested method for creating your Grunt tasks is to write them in the tools/grunt/spark folder:  when a spark is loaded using the _loadspark
+                Sparker task, the contents of the spark's "grunt" folder are written to the tools/grunt/spark folder, so you want to make sure any relative paths in your tasks work
+                that tools/grunt/spark location.  When you're done, you can then copy all of the task and option code into the "grunt" folder of your spark.</p>
+
+            <p>What allows Sparker to run two different sets of Grunt tasks (the Sparker tasks and the ones from the loaded spark) is the fact that the task options and the task
+                definitions are broken up into separate files, rather than being kept together in the standard Gruntfile.js.  Feel free to look at the Gruntfile.js file in the "tools"
+                directory to see how that's done.  Again, the "first" spark provides a good reference example for how to write your tasks and task options in this manner.</p>
+
+            <p>There are a few things to keep in mind when writing your spark Grunt tasks:</p>
+            <ul id="sparkGruntRules">
+                <li>All Sparker task names start with an underscore, and all Sparker task configuration names start with "sparker."  Simply avoid using those naming conventions
+                    in your spark Grunt tasks and task configurations in order to avoid any name collisions.</li>
+                <li>The Sparker and sparker tasks share the same Grunt dependencies, per the package.json file and node_modules folder in the "tools" folder.  So if your tasks
+                    require additional plugins, they will need to be installed in the "tools" directory.</li>
+            </ul>
+
+            <h2><a name="resources"></a>Resources / Inspirations</h2>
+            <p>Some of the resources and references that influenced or aided the creation of Sparker:</p>
+            <ul>
+                <li>
+                    <a href="http://stackoverflow.com/questions/14863959/programmatically-set-options-for-grunt-task?rq=1" target="_blank">http://stackoverflow.com/questions/14863959/programmatically-set-options-for-grunt-task?rq=1</a>
+                </li>
+                <li>
+                    <a href="http://stackoverflow.com/questions/25342493/grunt-sending-array-of-sourcefiles-to-grunt-task-uglify" target="_blank">http://stackoverflow.com/questions/25342493/grunt-sending-array-of-sourcefiles-to-grunt-task-uglify</a>
+                </li>
+                <li>
+                    <a href="https://quickleft.com/blog/grunt-js-tips-tricks/" target="_blank">https://quickleft.com/blog/grunt-js-tips-tricks/</a>
+                </li>
+                <li>
+                    <a href="http://www.thomasboyt.com/2013/09/01/maintainable-grunt.html" target="_blank">http://www.thomasboyt.com/2013/09/01/maintainable-grunt.html</a>
+                </li>
+                <li>
+                    <a href="http://www.html5rocks.com/en/tutorials/tooling/supercharging-your-gruntfile/" target="_blank">http://www.html5rocks.com/en/tutorials/tooling/supercharging-your-gruntfile/</a>
+                </li>
+                <li>
+                    <a href="http://stackoverflow.com/questions/17052301/updating-file-references-in-a-json-file-via-a-grunt-task" target="_blank">http://stackoverflow.com/questions/17052301/updating-file-references-in-a-json-file-via-a-grunt-task</a>
+                </li>
+            </ul>
+
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

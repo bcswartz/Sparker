@@ -1,0 +1,48 @@
+<h1>User Account</h1>
+<br />
+
+<div class="row">
+    <div class="col-md-7">
+        <p class="bg-success successBlock" ng-show="vm.uiState.success">Your changes have been saved.</p>
+    </div>
+</div>
+
+<form class="form-horizontal well col-md-7" role="form">
+    <p>All fields are required (but feel free to call my bluff).</p><br />
+    <div class="form-group">
+        <label for="firstName" class="col-md-3">First name:</label>
+        <div class="col-md-6">
+            <input class="form-control" type="text" id="firstName" ng-model="vm.account.firstName" tabindex="1">
+            <ul class="errorList errorFirstName bg-danger" ng-show="vm.errors.firstName">
+                <li ng-repeat="err in vm.errors.firstName">{{err.message}}</li>
+            </ul>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="lastName" class="col-md-3">Last name:</label>
+        <div class="col-md-6">
+            <input class="form-control" type="text" id="lastName" ng-model="vm.account.lastName" tabindex="2">
+            <ul class="errorList errorLastName bg-danger" ng-show="vm.errors.lastName">
+                <li ng-repeat="err in vm.errors.lastName">{{err.message}}</li>
+            </ul>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="email" class="col-md-3">Email address:</label>
+        <div class="col-md-6">
+            <input class="form-control" type="text" id="email" ng-model="vm.account.email" tabindex="3">
+            <ul class="errorList errorEmail bg-danger" ng-show="vm.errors.email">
+                <li ng-repeat="err in vm.errors.email">{{err.message}}</li>
+            </ul>
+        </div>
+    </div>
+
+    <input class="btn btn-primary" type="submit" value="{{(vm.uiState.sending) ? 'Saving...' : 'Save' }}" ng-disabled="vm.uiState.sending" ng-click="vm.saveChanges()" tabindex="4">
+
+</form>
+
+<div class="row">
+    <div class="col-md-7">
+        <p>This page is available to all users regardless of role, as denoted by the use of "auth" in the route URL in the address bar without specifying any user role.</p>
+    </div>
+</div>

@@ -1,0 +1,21 @@
+<h1>Top Client Accounts By Profit</h1>
+<br />
+
+<table class="table table-bordered" ng-show="vm.uiState.pageLoaded">
+    <thead>
+    <tr>
+        <th>Client Name</th>
+        <th>Income</th>
+        <th>Expenditures</th>
+        <th>Profit</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="client in vm.clients | orderBy:'-profit' ">
+        <td>{{client.name}}</td>
+        <td align="right">{{client.income | currency: '$ ' : 0 }}</td>
+        <td align="right">{{client.expenditures | currency: '$ ': 0 }}</td>
+        <td align="right">{{client.profit | currency: '$ ' : 0 }}</td>
+    </tr>
+    </tbody>
+</table>

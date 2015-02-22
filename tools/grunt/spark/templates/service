@@ -1,0 +1,13 @@
+'use strict';
+
+angular.module( '<%= grunt.config("sparkConfig").ngapp %>.services' )
+
+.factory( '<%= grunt.option("name") %>', [ <%= grunt.option("dependencyInjections").quotedList %> function( <%= grunt.option("dependencyInjections").list %> ) {
+    //Private methods
+
+    //Public methods
+    return {
+
+    }
+
+}]);

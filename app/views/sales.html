@@ -1,0 +1,24 @@
+<h1>Sales Prospects</h1>
+<br />
+
+<table class="table table-bordered" ng-show="vm.uiState.pageLoaded">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Phone Number</th>
+            <th>Email Address</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="prospect in vm.prospects">
+            <td>
+                <a href="#/auth/sales/prospect/{{prospect.id}}" tabindex="{{($index + 1)}}">{{prospect.fullName}}</a>
+            </td>
+            <td>{{prospect.phone}}</td>
+            <td>{{prospect.email}}</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>Note: clicking on the prospect with the name "Lost Authentication" will simulate a loss of your user session (like a timeout), and you'll be forced to log in again.</p>
+

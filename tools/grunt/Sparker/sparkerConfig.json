@@ -1,0 +1,9 @@
+{
+  "projectUrl": "http://localhost/Sparker",
+  "projectWebBrowser": "Chrome",
+  "masterJSFilename": "master.js",
+  "masterCSSFilename": "master.css",
+  "cssResources": [],
+  "jsResources": [],
+  "currentSpark": "first/demo"
+}

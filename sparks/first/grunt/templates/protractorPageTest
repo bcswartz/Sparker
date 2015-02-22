@@ -1,0 +1,15 @@
+'use strict';
+
+var <%= grunt.option("pageObject") %> = require( '<%= grunt.option("pageObjectPath") %>/<%= grunt.option("pageObject") %>.js' );
+var <%= grunt.option("pageObjectVariable") %>;
+
+describe( '<%= grunt.option("pageObject") %> view', function() {
+    var pageLoaded = false;
+    beforeEach( function() {
+        if( !pageLoaded ) {
+            <%= grunt.option("pageObjectVariable") %> = new <%= grunt.option("pageObject") %>();
+            <%= grunt.option("pageObjectVariable") %>.get();
+            pageLoaded = true;
+        }
+    });
+});

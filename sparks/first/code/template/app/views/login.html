@@ -1,0 +1,28 @@
+<div class="row">
+    <div class="col-md-4 col-md-offset-4">
+        <div class="col-md-12">
+            <h1>Login</h1>
+
+            <div class="well center-block">
+                <form role="form">
+                    <div class="form-group" name="loginForm" id="loginForm">
+                        <label for="username">User name:</label>
+                        <input type="text" class="form-control" id="username" ng-model="vm.userLogin.username" placeholder="Enter username" tabindex="1" />
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input type="password" class="form-control" id="password" ng-model="vm.userLogin.password" placeholder="Enter password" tabindex="2" />
+                    </div>
+                    <ul class="errorList bg-danger" ng-show="vm.error">
+                        <li>{{vm.error}}</li>
+                    </ul>
+                    <button id="loginSubmitBtn" type="submit" class="btn btn-primary" tabindex="3" ng-disabled="vm.uiState.sending" ng-click="vm.performLogin()">
+                        Submit
+                    </button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+</div>

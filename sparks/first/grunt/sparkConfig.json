@@ -1,0 +1,4 @@
+{
+    "ngapp": "firstSpark",
+    "buildFiles": [ "index.html", "views/**" ]
+}

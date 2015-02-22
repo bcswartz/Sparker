@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>First Spark</title>
+    <link rel="stylesheet" media="screen" href="bootstrap.min.css"/>
+    <link rel="stylesheet" media="screen" href="firstDocs.css" />
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <h3>Contents</h3>
+            <ul class="nav nav-sidebar">
+                <li><a href="#overview">Overview / Highlights</a></li>
+                <li><a href="#configuration">Configuration Steps</a></li>
+                <li><a href="#userroles">User Roles and Route Access</a></li>
+                <li><a href="#interceptors">The HTTP Interceptors</a></li>
+                <li><a href="#authService">Boilerplate authService functions</a></li>
+                <li><a href="#mockData">Mocking REST calls and REST data</a></li>
+                <li><a href="#protractorUserRoles">Using Protractor with user roles</a></li>
+                <li><a href="#gruntTasks">Included Grunt tasks</a></li>
+                <li><a href="#resources">Resources / Inspirations</a></li>
+            </ul>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <h1>first Spark Documentation</h1>
+            <h2><a name="overview"></a>Overview / Highlights</h2>
+            <p>This spark is meant to provide a foundation for a single-page AngularJS application where a user's access to particular
+            views and navigation options are determined by his/her user roles.  It includes Twitter Bootstrap to provide the styles and power and navigation bar
+            and utilizes the core Angular router (ng-route).</p>
+            <p>Some of the other notable features:</p>
+            <ul id="overviewList">
+                <li>Built on <a href="https://angularjs.org/" target="_blank">AngularJS 1.3.x</a></li>
+                <li>Incorporates the <a href="https://docs.angularjs.org/api/ngAria" target="_blank">ngAria module</a> (compatible with Angular 1.3x and higher) to automatically add ARIA
+                    accessibility attributes in certain scenarios.</li>
+                <li>Uses the "controller as" syntax to bind controllers and views without utilizing $scope.</li>
+                <li>Provides boilerplate code for making the REST calls to the server for authenticating the user and requesting data about the user and their roles
+                from the server.</li>
+                <li>Uses HTTP interceptors to ensure REST data requests are not cached by the browser and to handle certain error conditions.</li>
+                <li>Controls user access to different application views by comparing the user's roles against the specified route based on a route naming convention.</li>
+                <li>The demo codebase demonstrates how to use the <a href="https://docs.angularjs.org/api/ngMockE2E" target="_blank">ngMockE2E</a> module, $httpBackend requests, and mock data to mock
+                    REST responses and simulate an operational application.</li>
+                <li>Provides <a href="http://jasmine.github.io/1.3/introduction.html" target="_blank">Jasmine</a>-based unit tests run with <a
+                        href="http://karma-runner.github.io/0.12/index.html" target="_blank">Karma</a>, and end-to-end tests written with
+                    <a href="http://angular.github.io/protractor/#/" target="_blank">Protractor</a>. The Protractor tests demonstrate a technique for running certain sets of
+                        tests based on user role.</li>
+                <li>Provides <a href="http://gruntjs.com/" target="_blank">Grunt</a> commands for:
+                    <ul>
+                        <li>Executing unit tests and the various Protractor test suites from the command line.</li>
+                        <li>Creating skeleton files for new Angular controllers, services, directives, and unit and Protractor test files.</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <p>This spark provides two codebases:  the "template" codebase meant to be the clean starting point for a new Angular-based application, and
+            the "demo" codebase that provides a working example of an application based on the spark.</p>
+
+            <h2><a name="configuration"></a>Configuration Steps</h2>
+
+            <p>The web applications in the "template" and "demo" codebases will work without any sort of configuration. The "template"
+            codebase includes some "TODO" comments pointing out areas that require configuration if you want to utilize certain features
+            as you build on top of the codebase.</p>
+
+            <p>If you want to run the unit tests in either codebase, you will need to make sure <a
+                    href="http://karma-runner.github.io/0.12/index.html" target="_blank">Karma</a> is installed on your machine:</p>
+                <ul>
+                    <li>Open a command prompt and run the command <em>npm install -g karma-cli</em>.</li>
+                </ul>
+            <p>Note that Karma is configured to use Chrome
+            to help execute the tests:  you can change that in the configuration file in testing/config/karma.conf.js.</p>
+
+            <p>If you want to run the Protractor tests in either codebase, you will need to have <a href="http://angular.github.io/protractor/#/" target="_blank">Protractor</a> installed on your machine:</p>
+                <ul>
+                    <li>Open a command prompt and run the command <em>npm install -g protractor</em></li>
+                    <li>Then run the command <em>webdriver-manager update</em> to install the needed binaries.</li>
+                </ul>
+            <p>You will also need to change the local URL
+            for the app in the testing/e2e/helpers/PrepareObject.js file in each codebase (or in the Sparker "testing" folder after the spark is loaded) to point to the web address
+            of this instance of Sparker.</p>
+
+            <p>The 3rd-party resources used (Bootstrap, AngularJS, etc) located in the packages folder were originally installed with <a href="http://bower.io/">Bower</a>.
+                The Bower.json file that tracks the packages is present in the app folder if you want to use install and use Bower to maintain those libraries.</p>
+
+            <h2><a name="userroles"></a>User Roles and Route Access</h2>
+
+            <p>When there are certain views and functions in your application that are only meant to be accessed by certain users, the usual approach to prevent unauthorized
+            users from accessing those areas is to hide the navigation elements that lead to those areas, and/or to add code to the controller for that view that checks
+            the user's credentials.  The drawback with the latter approach is that you have to remember to add that credential check to every relevant controller.</p>
+
+            <p>This spark uses a technique in which the user's ability to access a route is determined by his or her user roles and the structure of the URL route,
+            and the authorization check occurs on a route change, without the need to add code to any of the relevant controllers.</p>
+
+            <p>To make use of this feature, simply do the following:</p>
+
+            <ol>
+                <li>Populate the authRoles constant in the app.js file that serves as the Angular root module for the application with the names of all of the user roles
+                the application needs to support.</li>
+                <li>Make sure that the service functions that perform the user login (performLogin) and retrieve the user token from the server (requestUser)
+                populate the $rootScope.session.user object with a "roles" property containing an array of the user's roles.</li>
+                <li>Make sure you have "/login" and "/unauthorized" routes to redirect users when they cannot access a route based on their
+                    authentication status or permissions.</li>
+                <li>Write your $routeProvider roles based on the following conventions:
+                    <ul>
+                        <li>If the route is meant to be accessible to any authenticated user, regardless of role, start the route URL with "/auth" followed by
+                        the unique name of the route (example:  "/auth/updateProfile").</li>
+                        <li>If the route is only accessible to a user with a particular user role, start the route URL with "/auth" followed by the name of the
+                        role and then the unique name of the route (example: "/auth/admin/manageUsers").</li>
+                        <li>If the route is accessible to multiple roles, start the route URL with "/auth" followed by
+                            the unique name of the route, then add logic to the route controller to verify that the user has one of the necessary roles.</li>
+                        <li>If the route can be accessed by unauthenticated users/prior to login, do not include "/auth" or any user roles in the route URL.</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <p>All of the relevant code that enforces these routing conventions lives in the run() method of the app.js file.  Look at that file in the demo codebase
+                (code/demo/app/common/app.js) to see an implementation example.</p>
+
+            <h2><a name="interceptors"></a>The HTTP Interceptors</h2>
+
+            <p>The app/services/interceptorService.js file defines HTTP interceptor functions used in the application and adds them to the $httpProvider
+            interceptors array.  These interceptors:</p>
+
+            <ul>
+                <li>Add a timestamp value to any GET request designed to retrieve data (as opposed to an HTML file), preventing browsers from serving up
+                stale, cached results of previous calls to the same URL.</li>
+                <li>Redirect users to the "/login" route anytime an HTTP response returns a 403 status code indicating that the user is no longer
+                authenticated to the back-end service.</li>
+                <li>Generate a generic error message visible in any Angular view whenever the HTTP response returns a 0 or 500 status code, indicating
+                a communication issue with the server, and clear that error whenever a user switches views.</li>
+            </ul>
+
+            <p>The demo version of the codebase provides scenarios to simulate some of these behaviors, one tied to login credentials used in the login
+            view, the other tied to the detail link of the table on the main Sales view (further details are available in both views).</p>
+
+            <p>For more information on HTTP interceptors in general, consult the Angular documentation:
+            <a href="https://docs.angularjs.org/api/ng/service/$http#interceptors" target="_blank">https://docs.angularjs.org/api/ng/service/$http#interceptors</a></p>
+
+            <h2><a name="authService"></a>Boilerplate authService Functions</h2>
+
+            <p>The "template" codebase provides some boilerplate service functions in the app/services/authService.js file for interacting with the
+            server via Angular's $http service to send and receive authentication and authorization data.  You should be able to use them in your
+            application by simply providing the needed REST endpoint URLs.  The "demo" codebase uses the same functions with URLs that point
+            to mocked endpoints defined in the mockRESTService.js file.</p>
+
+            <p>One detail worth surfacing here is the use of the "withCredentials" option in the requestUser() function.  That setting, used by both the $http and $resource
+            Angular services, needs to be set to "true" for any request where you want your application to send the authentication token cookie to the server to make
+            an authenticated request for data.</p>
+
+            <h2><a name="mockData"></a>Mocking REST Calls and REST Data</h2>
+
+            <p>The $httpBackend service provided by the AngularJS ngMock module is primarily used to provide a fake response to HTTP calls made during unit tests.  However,
+            it is also available in the ngMockE2E module (another module defined in the angular-mocks.js file) and can be used during end-to-end testing or to provide fake
+            responses in an app not connected to real data, such as in the "demo" codebase.</p>
+
+            <p>In the "demo" codebase, the mockServices module defined in the app/services/mockRESTService.js file is added as a dependency to the root module of the application
+            in app/common/app.js, and the ngMockE2E module is itself is a dependency of the mockServices module.  So the mockRESTService.js file contains all of the mock data and
+            the $httpBackend statements that intercept the calls made in the demo application and return the appropriate data.  It also contains a final $httpBackend statement
+            that allows un-intercepted GET requests to pass through (resolve to the real URL), which is essential for allowing the calls to retrieve the view HTML through.</p>
+
+            <h2><a name="protractorUserRoles"></a>Using Protractor with User Roles</h2>
+
+            <p>The suggested tool for performing end-to-end (E2E) / browser interaction tests with AngularJS is <a href="http://angular.github.io/protractor/#/" target="_blank">.  This spark contains Protractor tests that execute against
+            page objects: JavaScript objects that handle the task of interacting with the DOM elements in the browser you want to access in your tests.  Storing these interactions
+            in page objects rather than in the tests means you only have one file to update if the application pages are designed and the DOM elements get renamed, relocated,
+            or removed.</p>
+
+            <p>Web applications where some pages and page elements are accessible to users with user role X, while other pages and page elements are accessible to users with
+                user role Y provide a challenge when writing browser interaction tests, as the login process and the resulting authenticated user become parameters affecting
+            the test. E2E tests tend to be slow to begin with:  having to go through the login process for each individual authenticated view adds to the execution time.</p>
+
+            <p>The Protractor tests in this spark address this challenge.  The test files, located in the testing/e2e/testFiles folder, are split between "unauthenticated"
+            and "authenticated" subfolders, and the "authenticated" folder contains subfolders for each user role.  This division of tests is then reflected in the "suites"
+            setting of the Protractor configuration file (testing/config/protractor.conf.js).  When Protractor is instructed to execute one of these suites of tests, the onPrepare()
+            function in the configuration file relays the name of the suite plus other information to the related PrepareObject in testing/e2e/helpers, receives back the
+            appropriate login credentials and user metadata, and executes the login process.  The suite of tests is then executed with expectations based on the user credentials
+            used for that suite.</p>
+
+            <p>The Protractor tests in the "demo" codebase provide the best set of learning examples of this technique and of the tests and page objects, since the "template"
+            codebase has no set user roles or role-specific views.</p>
+
+            <h2><a name="gruntTasks"></a>Included Grunt Tasks</h2>
+
+            <p>The <a href="http://gruntjs.com/" target="_blank">Grunt</a> tasks provided in this spark fall into two categories:  test execution tasks and file generation tasks.</p>
+
+            <h3>Testing Tasks</h3>
+
+            <p>The test execution tasks let you run the unit tests and Protractor tests from the command line, providing an easy means of executing a specific suite of Protractor tests
+                as described in the earlier Protractor section.  It should be noted, however, that some IDEs like Webstorm and IntelliJ can be configured to execute these tests and report
+                the results in a window in the IDE, which tends to result in more readable output.</p>
+
+            <ul class="taskList">
+                <li>
+                    <span>runkarma</span>
+                    <div>Example: <em>grunt runkarma</em></div>
+                    <p>Runs all of the unit tests for the currently-loaded codebase via Karma.</p>
+                </li>
+                <li>
+                    <span>runprotractor-unauth</span>
+                    <div>Example: <em>grunt runprotractor-unauth</em></div>
+                    <p>Runs all of the Protractor tests in the "unauthenticated" suite of tests.</p>
+                </li>
+                <li>
+                    <span>runprotractor-auth</span>
+                    <div>Example: <em>grunt runprotractor-auth</em></div>
+                    <p>Runs all of the Protractor tests in the "authenticated" suite of tests.</p>
+                </li>
+                <li>
+                    <span>runprotractor-sales</span>
+                    <div>Example: <em>grunt runprotractor-sales</em></div>
+                    <p>Runs all of the Protractor tests in the "sales" suite of tests.  Only useful when the "demo" codebase is loaded.</p>
+                </li>
+                <li>
+                    <span>runprotractor-accounting</span>
+                    <div>Example: <em>grunt runprotractor-accounting</em></div>
+                    <p>Runs all of the Protractor tests in the "accounting" suite of tests.  Only useful when the "demo" codebase is loaded.</p>
+                </li>
+                <li>
+                    <span>runprotractor-admin</span>
+                    <div>Example: <em>grunt runprotractor-admin</em></div>
+                    <p>Runs all of the Protractor tests in the "admin" suite of tests.  Only useful when the "demo" codebase is loaded.</p>
+                </li>
+            </ul>
+
+            <h3>File Generation Tasks</h3>
+
+            <p>The file generation tasks provide commands for generating the starting skeletons for certain types of files that follow the coding syntax of the spark.  The tasks that
+                generate the AngularJS files need to know the name of the root module (the value of the "ng-app" attribute used in the index.html file, and those tasks get that name
+                from the "ngapp" setting in the grunt/sparkConfig.json file in this spark.  So make sure that setting value is in sync with the value of the "ng-app" attribute.  The
+                template files that are copied and transformed by these tasks are located in the grunt/templates folder.</p>
+
+            <ul class="taskList">
+                <li>
+                    <span>controller</span>
+                    <div>Example: <em>grunt controller --name=widgetController --di=$location,authService</em></div>
+                    <p>Generates a new controller file in the app/controllers folder. Options:</p>
+                    <ul class="taskOptions">
+                        <li>name: The name of the new controller file (required).  It will have ".js" appended to the end of the name.</li>
+                        <li>di: A comma-delimited list of any objects/functions to be injected into the controller via inline array annotation.</li>
+                    </ul>
+                </li>
+                <li>
+                    <span>service</span>
+                    <div>Example: <em>grunt controller --name=widgetService --di=authService,$q</em></div>
+                    <p>Generates a new service file in the app/services folder. Options:</p>
+                    <ul class="taskOptions">
+                        <li>name: The name of the new service file (required). It will have ".js" appended to the end of the name.</li>
+                        <li>di: A comma-delimited list of any objects/functions to be injected into the service via inline array annotation.</li>
+                    </ul>
+                </li>
+                <li>
+                    <span>directive</span>
+                    <div>Example: <em>grunt directive --name=widgetDirective --di=userService</em></div>
+                    <p>Generates a new (very basic) directive file in the app/common folder. Options:</p>
+                    <ul class="taskOptions">
+                        <li>name: The name of the new directive file (required). It will have ".js" appended to the end of the name.</li>
+                        <li>di: A comma-delimited list of any objects/functions to be injected into the directive.</li>
+                    </ul>
+                </li>
+                <li>
+                    <span>unittest</span>
+                    <div>Example: <em>grunt unittest --name=loginController --modules=controllers,services</em></div>
+                    <p>Generates a new unit test file in the Sparker testing/unit folder. Options:</p>
+                    <ul class="taskOptions">
+                        <li>name: The name of the new test file (required).  It will have "spec.js" appended to the end of the name.</li>
+                        <li>modules: If the test requires the loading of the controller and/or service modules, specify "controllers", "services", or "controllers,services".</li>
+                    </ul>
+                </li>
+                <li>
+                    <span>pageobject</span>
+                    <div>Example: <em>grunt pageObject --name=loginPage --route=/login</em></div>
+                    <p>Generates a new page object file in the Sparker testing/e2e/pageObjects folder. Options:</p>
+                    <ul class="taskOptions">
+                        <li>name: The name of the new page object file (required).  It will have ".js" appended to the end of the name.</li>
+                        <li>route: The Angular route that pulls up the HTML containing the DOM elements the page object will interact with.</li>
+                    </ul>
+                </li>
+                <li>
+                    <span>e2etest</span>
+                    <div>Example: <em>grunt e2etest --name=salesInvoice --path=/authenticated/sales --pageObject=InvoiceObject</em></div>
+                    <p>Generates a new Protractor test file in the Sparker testing/e2e/testFiles folder based on the path provided. Options:</p>
+                    <ul class="taskOptions">
+                        <li>name: The name of the new test file (required).  It will have ".js" appended to the end of the name.</li>
+                        <li>path: The location of the test file in the testFiles subfolder, based on which test suite it should belong to.  Defaults to "/" if not specified. The
+                        supplied page also determines the relative path to the page objects folder, so relocating a test file means updating that relative path to the page object
+                        in the test file.</li>
+                        <li>pageObject: Name of the page object (minus the ".js" file extension) used by the test.  Must start with an uppercase letter (the page object filename is
+                        expected to start with an uppercase letter).</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h2><a name="resources"></a>Resources / Inspirations</h2>
+            <p>Some of the resources and references that influenced or aided the creation of this spark:</p>
+            <ul>
+                <li>
+                    <a href="http://tech.pro/tutorial/1190/package-managers-an-introductory-guide-for-the-uninitiated-front-end-developer" target="_blank">http://tech.pro/tutorial/1190/package-managers-an-introductory-guide-for-the-uninitiated-front-end-developer</a>
+                </li>
+                <li>
+                    <a href="http://blog.teamtreehouse.com/getting-started-bower" target="_blank">http://blog.teamtreehouse.com/getting-started-bower</a>
+                </li>
+                <li>
+                    <a href="https://docs.angularjs.org/api/ng/directive/ngCloak" target="_blank">https://docs.angularjs.org/api/ng/directive/ngCloak</a>
+                </li>
+                <li>
+                    <a href="https://gist.github.com/kennethlynne/7767088" target="_blank">https://gist.github.com/kennethlynne/7767088</a>
+                    and <a href="http://stackoverflow.com/questions/20350681/how-can-i-create-a-mock-back-end-in-angular" target="_blank">
+                    http://stackoverflow.com/questions/20350681/how-can-i-create-a-mock-back-end-in-angular</a> (for mocking REST responses)
+                </li>
+                <li>
+                    <a href="http://www.bennadel.com/blog/2612-using-the-http-service-in-angularjs-to-make-ajax-requests.htm" target="_blank">http://www.bennadel.com/blog/2612-using-the-http-service-in-angularjs-to-make-ajax-requests.htm</a>
+                </li>
+                <li>
+                    <a href="https://www.airpair.com/angularjs/posts/preparing-for-the-future-of-angularjs#3-2-remove-dependencies-on-scope" target="_blank">https://www.airpair.com/angularjs/posts/preparing-for-the-future-of-angularjs#3-2-remove-dependencies-on-scope</a>
+                </li>
+                <li>
+                    <a href="http://nathanleclaire.com/blog/2013/12/13/how-to-unit-test-controllers-in-angularjs-without-setting-your-hair-on-fire/" target="_blank">http://nathanleclaire.com/blog/2013/12/13/how-to-unit-test-controllers-in-angularjs-without-setting-your-hair-on-fire/</a>
+                </li>
+                <li>
+                    <a href="https://egghead.io/lessons/angularjs-using-ng-aria-to-automatically-improve-your-angularjs-accessibility" target="_blank">https://egghead.io/lessons/angularjs-using-ng-aria-to-automatically-improve-your-angularjs-accessibility</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+</body>
+</html>
