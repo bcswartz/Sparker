@@ -1,35 +1,41 @@
 # Sparker
 
-### TL;DR
+### What is Sparker?
 
 Sparker is a management system for maintaining a library of web application front-end templates (referred to as 
-"sparks") via Grunt.  At best, it's a useful tool for managing and trying out different templates for different types 
-of web applications.  At worst, it (and the AngularJS application template that comes with it) incorporates a number 
-of interesting approaches to certain problems that other developers may find useful.
+"sparks") via Grunt.
 
 ### Background
 
 This project started with the idea of creating a template for simple CRUD-focused AngularJS web applications 
-incorporating techniques from previous projects:  nothing fancy, just something that I could copy to a new directory 
+incorporating techniques from previous projects:  nothing fancy, just a codebase that I could copy to a new directory 
 and start customizing, and something I could share with other developers.  Part of the plan was to also create one 
 or more Grunt tasks to create application builds for particular environments.
 
-As I was building the Angular template, I came up with an idea for restricting user access to certain views in the application via a naming convention for the view routes.  The technique seemed like it warranted a demonstration, but I didn't want to pollute my template with mock user data that would have to be removed from the template when I started building on top of it, so I started building a demonstration version of the template.  It occurred to me that I could package both the plain template and the demo version of the template together, and provide a means of switching between the two (moving the code for each in and out of a single web directory) via Grunt.
+As I was building the Angular template, I came up with an idea for restricting user access to certain views in the application via a naming convention for the view routes.  The technique seemed like it warranted a demonstration, but I didn't want to pollute my codebase with mock user data that would have to be removed from the template when I started building on top of it, so I started building a demonstration version of the template.  It occurred to me that I could package both the plain template and the demo version of the codebase together, and provide a means of switching between the two (moving the code for each in and out of a single web directory) via Grunt.
 
-From there, it wasn't a huge leap to the idea of building a system to maintain multiple templates, different approaches for different use cases.  Sparker is the end result of that line of thought.
+From there, it wasn't a huge leap to the idea of building a system to maintain multiple codebases, different approaches for different use cases.  Sparker is the end result of that line of thought.
 
-Do I expect Sparker to become a popular tool for jump-starting the creation the web application front-ends?  Not really: there are already very robust tools for scaffolding new web applications like Yeoman or Express.js.  If you're already comfortably using tools like that you shouldn't bother investigating Sparker as an alternative, not unless you're looking for something more simplistic and less opinionated.
+I decided on the Sparker name for two reasons:
 
-That being said, I have no regrets about spending the time creating it.  I learned a lot (especially about Grunt) during the process.  I can apply some of what I learned elsewhere, and hopefully other developers can learn something from it to.  That's where the Sparker name comes from:  the hope that the code involved sparks other ideas in other developers.
+* I didn't want to use terms like "templates", "scaffolds", or "foundations" for the web application codebases housed in the project (partly because Sparker encourages creating demo codebases to accompany the "clean slate" template codebases).  So the codebases are organized into "sparks" and Sparker is the tool for managing them.
 
+* I wanted to focus on the inspirational aspect of the project:  that, if nothing else, the techniques in the sparks and in Sparker could "spark" ideas in other developers for how to approach certain problems. 
 
-### More Information
+Do I expect Sparker to become a popular tool for jump-starting the creation the web application front-ends?  Not really: there are already very robust tools for scaffolding new web applications like Yeoman or Express.js.  At the end of the day, I see Sparker as a functional proof-of-concept, something individuals or particular teams can play around with or use in their shops to maintain and build off of their own codebase libraries, but not something adopted for widespread use by the developer community.
 
-You can read more about the more interesting parts of Sparker and the included "first" spark by reading 
-the **_docs/index.html_** and **_sparks/first/docs/index.html_** files respectively.  But some of the highlights:
+But it was fun to develop, and I think there's value in sharing it.
 
-Demonstrates how to organize Grunt tasks and task options into separate files, and 
-how to execute two different sets of task from the same directory/Gruntfile
+### Getting Started
+
+To start using or exploring Sparker, simply download and unzip Sparker into a web-accessible directory.  Sparker is pre-loaded with the demo version of the included "first" spark located in the **_app_** directory, ready to run.  The documentation for Sparker is in the **_docs/index.html_** file, while the documentation for the "first" spark" is in **_sparks/first/docs/index.html_** (there are included Grunt tasks for opening/navigating to both sets of documentation as well).
+
+### Feature Highlights
+
+The documentation files cover the interesting parts of Sparker and the included "first" spark in some detail, but here are some of the highlights:
+
+* Demonstrates how to organize Grunt tasks and task options into separate files, and 
+how to execute two different sets of tasks from the same directory/Gruntfile.
 
 * A Grunt build task that determines which resource files to concatenate based on the &lt;link&gt; and &lt;script&gt; tags in your index.html file.
 
