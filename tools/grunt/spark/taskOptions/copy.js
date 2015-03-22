@@ -12,7 +12,7 @@ module.exports = {
                 grunt.Sparker.checkConfigSettings( 'spark', [ 'ngapp' ] );
                 grunt.Sparker.checkIfFileExists( grunt.task.current.data.dest );
                 var di = grunt.option( 'di' ) !== undefined ? grunt.option( 'di' ) : '';
-                grunt.option( 'dependencyInjections', utilityFunctions.renderDependencyInjections( di, 'controller' ) );
+                grunt.option( 'dependencyInjections', utilityFunctions.renderDependencyInjections( di, grunt.option( 'name' ) ) );
                 return grunt.template.process( content );
             }
         },
@@ -27,7 +27,7 @@ module.exports = {
                 grunt.Sparker.checkConfigSettings( 'spark', [ 'ngapp' ] );
                 grunt.Sparker.checkIfFileExists( grunt.task.current.data.dest );
                 var di = grunt.option( 'di' ) !== undefined ? grunt.option( 'di' ) : '';
-                grunt.option( 'dependencyInjections', utilityFunctions.renderDependencyInjections( di, 'directive' ) );
+                grunt.option( 'dependencyInjections', utilityFunctions.renderDependencyInjections( di, grunt.option( 'name' ) ) );
                 return grunt.template.process( content );
             }
         },
@@ -81,7 +81,7 @@ module.exports = {
                 grunt.Sparker.checkConfigSettings( 'spark', [ 'ngapp' ] );
                 grunt.Sparker.checkIfFileExists( grunt.task.current.data.dest );
                 var di = grunt.option( 'di' ) !== undefined ? grunt.option( 'di' ) : '';
-                grunt.option( 'dependencyInjections', utilityFunctions.renderDependencyInjections( di, 'service' ) );
+                grunt.option( 'dependencyInjections', utilityFunctions.renderDependencyInjections( di, grunt.option( 'name' ) ) );
                 return grunt.template.process( content );
             }
         },

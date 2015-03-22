@@ -69,6 +69,13 @@ module.exports = {
                 dot: true,
                 expand: true,
                 src: [ 'app/**', 'testing/**' ]
+            },
+            {
+                cwd: '../tools/grunt/spark/',
+                dest: 'snapshots/latest/<%= grunt.option("snapFolder") %>/grunt/',
+                dot: true,
+                expand: true,
+                src: [ '<%= grunt.option("gruntSrc") %>' ]
             }
         ]
     },
@@ -81,6 +88,13 @@ module.exports = {
                 dot: true,
                 expand: true,
                 src: [ 'app/**', 'testing/**' ]
+            },
+            {
+                cwd: '../tools/grunt/spark/',
+                dest: 'snapshots/<%= grunt.option("snapTag") %>/<%= grunt.option("snapFolder") %>/grunt/',
+                dot: true,
+                expand: true,
+                src: [ '<%= grunt.option("gruntSrc") %>' ]
             }
         ]
     },

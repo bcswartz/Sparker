@@ -1,8 +1,9 @@
 'use strict';
 
 angular.module( 'firstSpark.controllers' )
+    .controller( 'userAccountController', userAccountController );
 
-.controller( 'userAccountController', [ 'authService',  function( authService ) {
+function userAccountController( authService ) {
     var vm = this;
     vm.uiState = { sending: false, success: false };
 
@@ -22,4 +23,6 @@ angular.module( 'firstSpark.controllers' )
             }
         );
     }
-}]);
+}
+
+userAccountController.$inject = [ 'authService' ];

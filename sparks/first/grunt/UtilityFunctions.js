@@ -1,17 +1,18 @@
 var UtilityFunctions = ( function() {
 
-    this.renderDependencyInjections = function( diOption, context ) {
+    this.renderDependencyInjections = function( diOption, name ) {
         var dependencyInjections = {};
 
         if( diOption === '' ) {
             dependencyInjections.list = '';
-            dependencyInjections.quotedList = '' ;
         } else {
             var diArray = diOption.split(",");
-            dependencyInjections.list = diArray.join(', ');
-            dependencyInjections.quotedList = diArray.map( function( di ) {
+            var quotedList = diArray.map( function( di ) {
                 return "'" + di + "'";
-            }).join(', ') + ', ';
+            }).join(', ');
+
+            dependencyInjections.list = diArray.join(', ');
+            dependencyInjections.injectStatement = name + '.$inject = [ ' + quotedList + ' ];'
         }
 
         return dependencyInjections;

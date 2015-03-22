@@ -1,10 +1,11 @@
 'use strict';
 
 angular.module( 'firstSpark.controllers')
+    .controller( 'salesController', salesController );
 
-.controller( 'salesController', [ 'demoService',  function( demoService ) {
-   var vm = this;
-   vm.uiState = { pageLoaded: false };
+function salesController ( demoService ) {
+    var vm = this;
+    vm.uiState = { pageLoaded: false };
 
     demoService.getProspects().then(
         function( response ) {
@@ -12,6 +13,6 @@ angular.module( 'firstSpark.controllers')
             vm.uiState.pageLoaded = true;
         }
     );
+}
 
-
- }]);
+salesController.$inject = [ 'demoService' ];

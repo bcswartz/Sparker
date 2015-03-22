@@ -1,13 +1,16 @@
 'use strict';
 
 angular.module( '<%= grunt.config("sparkConfig").ngapp %>.services' )
+    .factory( '<%= grunt.option("name") %>', <%= grunt.option("name") %> );
 
-.factory( '<%= grunt.option("name") %>', [ <%= grunt.option("dependencyInjections").quotedList %> function( <%= grunt.option("dependencyInjections").list %> ) {
-    //Private methods
+function <%= grunt.option("name") %> ( <%= grunt.option("dependencyInjections").list %> ) {
+    //Object with public methods and properties
+    var service = {
 
-    //Public methods
-    return {
+    };
+    return service;
 
-    }
+    //Methods
+}
 
-}]);
+<%= grunt.option("dependencyInjections").injectStatement %>

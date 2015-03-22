@@ -1,6 +1,6 @@
 var PrepareObject = ( function() {
 
-    this.projectUrl = 'http://local.test/angularTemplate';
+    this.projectUrl = 'http://localhost/Sparker';
     this.homeRoute = this.projectUrl + '/app/#/home';
     this.loginRoute = this.projectUrl + '/app/#/login';
 

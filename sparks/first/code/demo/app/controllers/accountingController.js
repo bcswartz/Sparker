@@ -1,8 +1,9 @@
 'use strict';
 
 angular.module( 'firstSpark.controllers' )
+    .controller( 'accountingController', accountingController );
 
-.controller( 'accountingController', [ 'demoService',  function( demoService ) {
+function accountingController ( demoService ) {
     var vm = this;
     vm.uiState = { pageLoaded: false };
 
@@ -12,4 +13,6 @@ angular.module( 'firstSpark.controllers' )
             vm.uiState.pageLoaded = true;
         }
     );
-}]);
+}
+
+accountingController.$inject = [ 'demoService' ];

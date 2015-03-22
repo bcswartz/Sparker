@@ -1,8 +1,9 @@
 'use strict';
 
 angular.module( 'firstSpark.controllers' )
+    .controller( 'prospectController', prospectController );
 
-.controller( 'prospectController', [ 'demoService', '$routeParams',  function( demoService, $routeParams ) {
+function prospectController( $routeParams, demoService ) {
     var vm = this;
 
     demoService.getProspect( $routeParams.prospectId ).then(
@@ -10,4 +11,6 @@ angular.module( 'firstSpark.controllers' )
             vm.prospect = response.data;
         }
     );
-}]);
+}
+
+prospectController.$inject = [ '$routeParams', 'demoService' ];

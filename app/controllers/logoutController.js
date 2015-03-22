@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module( 'firstSpark.controllers' )
+    .controller( 'logoutController', logoutController );
 
-.controller( 'logoutController', [ 'authService', '$location', function( authService, $location ) {
-
+function logoutController( $location, authService ) {
     authService.performLogout().then(
         function( response ) {
             $location.path( '/home' );
@@ -12,5 +12,6 @@ angular.module( 'firstSpark.controllers' )
             $location.path( '/logoutError' );
         }
     )
+}
 
-}]);
+logoutController.$inject = [ '$location', 'authService' ];

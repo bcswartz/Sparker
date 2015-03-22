@@ -1,10 +1,11 @@
 'use strict';
 
 angular.module( 'firstSpark.controllers' )
+    .controller( 'loginController', loginController );
 
-.controller( 'loginController', [ 'authService', '$location',  function( authService, $location ) {
+function loginController ( $location, authService ) {
     var vm = this;
-        
+
     vm.uiState = {
         sending: false
     };
@@ -14,8 +15,9 @@ angular.module( 'firstSpark.controllers' )
         password: ''
     };
 
-    vm.performLogin = function() {
+    vm.performLogin = performLogin;
 
+    function performLogin () {
         vm.uiState.sending = true;
         authService.performLogin( vm.userLogin ).then(
             function( response ) {
@@ -34,7 +36,8 @@ angular.module( 'firstSpark.controllers' )
                 vm.uiState.sending = false;
             }
         )
-
     }
 
-}]);
+}
+loginController.$inject = [ '$location', 'authService' ];
+
